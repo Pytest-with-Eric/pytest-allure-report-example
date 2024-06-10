@@ -1,5 +1,6 @@
 import pytest
 import allure
+from pathlib import Path
 from text_processor.text_processor import (
     count_words,
     reverse_string,
@@ -55,3 +56,29 @@ def test_is_palindrome():
 )
 def test_capitalize_text(text, expected):
     assert capitalize_text(text) == expected
+
+
+def test_capitalize_text_with_fixture(example_word):
+    assert capitalize_text(example_word) == "Hello"
+
+
+def test_attach_screenshot():
+    png_bytes = Path("images/screenshot.png").read_bytes()
+    allure.attach(
+        png_bytes,
+        name="Home Page Screenshot",
+        attachment_type=allure.attachment_type.PNG,
+    )
+
+
+def test_example_failure():
+    assert 1 == 2
+
+
+def test_complex_operation_steps():
+    with allure.step("Step 1: Count Words"):
+        assert count_words("hello world") == 2
+    with allure.step("Step 2: Reverse String"):
+        assert reverse_string("hello") == "olleh"
+    with allure.step("Step 3: Check Palindrome"):
+        assert is_palindrome("civic") is True
