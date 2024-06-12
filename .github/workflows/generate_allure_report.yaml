@@ -38,7 +38,7 @@ jobs:
         if: always()
         with:
           allure_results: allure-results
-          allure_history: allure-history  # Temporary storage within the action runner
+          allure_history: allure-results
 
       - name: Publish Allure report on GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -46,4 +46,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: .  # Publishing from current directory where the report is generated
+          publish_dir: allure-results
