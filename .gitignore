@@ -162,8 +162,8 @@ cython_debug/
 
 # Videos and Images
 *videos
-*images
-*.png
+# *images
+# *.png
 
 # Allure results
 allure-results/ 
