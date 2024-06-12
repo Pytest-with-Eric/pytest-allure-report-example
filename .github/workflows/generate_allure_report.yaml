@@ -1,0 +1,58 @@
+name: Run Python tests and generate Allure report
+
+on:
+  push:
+    branches:
+      - gh-pages  # Adjust this as necessary for your project
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'  # Ensure this matches the Python version you're using in your project
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
+
+      - name: Run tests and generate Allure results
+        run: |
+          poetry run pytest --alluredir=allure-results
+
+      - name: Checkout gh-pages for Allure report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: gh-pages/allure-history
+          gh_pages: true
+
+      - name: Publish Allure report on GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: gh-pages
