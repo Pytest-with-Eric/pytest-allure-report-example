@@ -3,7 +3,7 @@ name: Run Python tests with Poetry and publish report
 on:
   push:
     branches:
-      - main  # Adjust this as necessary for your project
+      - master  # Adjust this as necessary for your project
 
 jobs:
   test:
