@@ -1,4 +1,4 @@
-def count_words(text: str) -> int:
+def count_words(text: str) -> int | bool:
     """Return the number of words in the given text."""
     if not text:
         return False
